@@ -1,40 +1,27 @@
-const { HttpStatus } = require("../shared/constant/httpCode");
 const { verifyAccessToken } = require("../shared/utils/jwt.util");
+const response = require("../shared/utils/response.util");
 
-export const auth = async (req, res, next) => {
+const auth = async (req, res, next) => {
   try {
     const auth = req.headers.authorization;
-    if (!auth) throw new Error("Unauthorized");
+    if (!auth) {
+      return response.unauthorized(res, "Authorization header missing");
+    }
 
     const token = auth.split(" ")[1];
-    if (!token) throw new Error("Not authorized");
+    if (!token) {
+      return response.unauthorized(res, "Access token missing");
+    }
 
     const decoded = verifyAccessToken(token);
     req.userId = decoded.sub;
     next();
   } catch (error) {
-    return response.failedResponse(
-      error.code || HttpStatus.unauthorized,
-      error.message || "Invalid token",
-      error
-    );
+    const errorMessage = error.message || "Invalid or expired token";
+    return response.forbidden(res, errorMessage);
   }
+};
 
-  // jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, payload) => {
-  //   if (err) return res.sendStatus(403);
-  //   req.userId = payload.sub;
-  //   next();
-  // });
-
-  // try {
-  //   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  //   req.user = await userService.findById(decoded.id);
-  //   next();
-  // } catch (error) {
-  //   return response.failedResponse(
-  //     HttpStatus.unauthorized,
-  //     error.message || "Invalid token",
-  //     error
-  //   );
-  // }
+module.exports = {
+  auth,
 };

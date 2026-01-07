@@ -1,14 +1,11 @@
 const { HttpStatus } = require("../../shared/constant/httpCode");
-const userRepo = require("../../repositories/user.repository");
+const userRepo = require("../../repositories/users.repository");
 const response = require("../../shared/utils/response.util");
 const {
   generateAccessToken,
   generateRefreshToken,
 } = require("../../shared/utils/jwt.util");
-const {
-  hashPassword,
-  comparePassword,
-} = require("../../shared/utils/hash.util");
+const { comparePassword } = require("../../shared/utils/hash.util");
 
 const register = async (req) => {
   try {
@@ -69,7 +66,6 @@ const login = async (req, res) => {
       { accessToken, refreshToken }
     );
   } catch (error) {
-    console.log("🚀 ~ login ~ error:", error);
     return response.failedResponse(
       HttpStatus.badRequest,
       error.message || "User login failed",
@@ -126,36 +122,6 @@ const logout = async (req, res) => {
     );
   }
 };
-
-// const login = async (req) => {
-//   try {
-//     const { username, password } = req.body;
-//     if (!username || !password) {
-//       throw new Error("Required fields are missing.");
-//     }
-
-//     const userExists = await userRepo.findByEmail(email);
-//     if (userExists) throw new Error("User already exists");
-
-//     const user = await userRepo.create({ username, email, password });
-//     const responseData = {
-//       _id: user._id,
-//       username: user.username,
-//       token: generateToken(user._id),
-//     };
-//     return response.successResponse(
-//       HttpStatus.created,
-//       "User created successfully",
-//       responseData
-//     );
-//   } catch (error) {
-//     return response.failedResponse(
-//       HttpStatus.badRequest,
-//       error.message || "User created failed",
-//       error
-//     );
-//   }
-// };
 
 // exports.likeComment = async (commentId, userId) => {
 //   const comment = await repo.findById(commentId);
