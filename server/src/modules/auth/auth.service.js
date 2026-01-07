@@ -123,30 +123,6 @@ const logout = async (req, res) => {
   }
 };
 
-// exports.likeComment = async (commentId, userId) => {
-//   const comment = await repo.findById(commentId);
-//   if (!comment) throw new Error("Comment not found");
-
-//   if (comment.likes.includes(userId)) throw new Error("Already liked");
-
-//   comment.dislikes.pull(userId);
-//   comment.likes.push(userId);
-
-//   return comment.save();
-// };
-
-// exports.dislikeComment = async (commentId, userId) => {
-//   const comment = await repo.findById(commentId);
-//   if (!comment) throw new Error("Already disliked");
-
-//   if (comment.dislikes.includes(userId)) throw new Error("Already disliked");
-
-//   comment.likes.pull(userId);
-//   comment.dislikes.push(userId);
-
-//   return comment.save();
-// };
-
 module.exports = {
   register,
   login,
