@@ -8,14 +8,10 @@ const connectDB = require("./config/db");
 const errorHandler = require("./middlewares/errorHandler");
 const { InfoLog, ErrorLog } = require("./config/logger");
 const { logDefinedRoutes } = require("./shared/utils/logger.util");
+const { allowedOrigins } = require("./shared/constant/constants");
+
 dotenv.config();
-
 const app = express();
-const apiRouter = express.Router();
-
-app.use(express.json());
-app.use(cookieParser());
-app.use("/api", apiRouter);
 
 const corsConfig = {
   origin: function (_origin, callback) {
@@ -25,6 +21,12 @@ const corsConfig = {
   credentials: true,
 };
 app.use(cors(corsConfig));
+
+app.use(express.json());
+app.use(cookieParser());
+
+const apiRouter = express.Router();
+app.use("/api", apiRouter);
 
 connectDB();
 
