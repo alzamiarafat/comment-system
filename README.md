@@ -63,39 +63,36 @@ git clone https://github.com/alzamiarafat/comment-system
 # Navigate into the project directory
 cd comment-system
 
-## Environment Configuration
-
 ## Backend
-cd backend
-Create a `.env` file in the backend directory:
+cd server
+```
 
+# Create a `.env` file in the backend directory:
+
+```bash
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/app
-JWT_ACCESS_SECRET=your_access_secret
-JWT_REFRESH_SECRET=your_refresh_secret
-
+MONGO_DB_URI=
+JWT_ACCESS_SECRET=your_jwt_access_secret_key
+JWT_ACCESS_EXPIRES=24h
+JWT_REFRESH_SECRET=your_jwt_refresh_secret_key
+JWT_REFRESH_EXPIRES=7d
+```
 
 # Install backend dependencies
-npm install
-npm run dev
+`npm install`
+`npm run dev`
 
 
 ### Frontend `.env`
 
 Create a `.env` file inside the `frontend` folder:
-
-REACT_APP_API_URL=http://localhost:5000/
+```bash
+REACT_APP_API_URL=http://localhost:5000
+```
 
 # Install frontend dependencies
 
-npm install
-npm start
-
-
----
-
-If you want, I can **also make a slightly shorter “GitHub-ready version” with badges, quick setup, and professional formatting**, so it looks like a polished open-source project page.  
-
-Do you want me to do that next?
+`npm install`
+`npm start`
 
 
