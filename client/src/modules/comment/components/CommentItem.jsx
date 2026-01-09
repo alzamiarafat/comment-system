@@ -39,15 +39,16 @@ export default function CommentItem({ comment, user, onReply, depth = 0 }) {
   return (
     <>
       <article className="flex gap-3">
-        {comment?.author?.profilePicture ? (
-          <img
-            className="w-8 h-8 rounded-full"
-            src={comment.author.profilePicture}
-            alt={comment.author.name}
-          />
-        ) : (
-          <FaCircleUser className="w-8 h-8 text-gray-500 items-center my-2" />
-        )}
+        <img
+          className="w-9 h-9 mt-2 rounded-full"
+          src={
+            comment?.author?.profilePicture
+              ? comment.author.profilePicture
+              : "https://cdn-icons-png.freepik.com/256/11680/11680860.png?semt=ais_white_label"
+          }
+          alt={comment?.author?.name}
+        />
+
         <div className="flex-1">
           <div className="">
             <div className="flex justify-between items-center">
