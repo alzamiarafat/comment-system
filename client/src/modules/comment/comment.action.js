@@ -5,7 +5,7 @@ import {
   reactionComment,
   updateComment,
   deleteComment,
-} from "../../services/comment.service";
+} from "./comment.service";
 
 export const getComments = createAsyncThunk(
   "comments/getComments",

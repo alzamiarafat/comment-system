@@ -43,7 +43,7 @@ const CommentDropdown = ({ commentId, onEdit }) => {
         type="button"
         aria-expanded={isOpen}
       >
-        <BsThreeDots className="h-6 w-6" />
+        <BsThreeDots className="h-5 w-5" />
         <span className="sr-only">Comment settings</span>
       </button>
 

@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../../services/axios.service";
-import { signIn } from "../../services/auth.service";
+import { currentUser, signIn, signOut, signUp } from "./auth.service";
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -20,7 +19,7 @@ export const register = createAsyncThunk(
   "auth/register",
   async (payload, { rejectWithValue }) => {
     try {
-      await api.post("/auth/register", payload);
+      await signUp(payload);
     } catch (err) {
       return rejectWithValue(err.response.data.error);
     }
@@ -31,7 +30,7 @@ export const checkAuth = createAsyncThunk(
   "auth/checkAuth",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await api.get("/auth/me");
+      const res = await currentUser();
       return res.data.data;
     } catch (err) {
       return rejectWithValue(null);
@@ -40,6 +39,6 @@ export const checkAuth = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk("auth/logout", async () => {
-  await api.post("/auth/logout");
+  await signOut();
   localStorage.removeItem("accessToken");
 });

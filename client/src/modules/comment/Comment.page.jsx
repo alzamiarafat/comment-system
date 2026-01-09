@@ -4,7 +4,7 @@ import { addNewComment, getComments } from "./comment.action";
 import Sidebar from "../../components/Sidebar";
 import PageLoader from "../../components/common/PageLoader";
 import CommentItem from "./components/CommentItem";
-import CommentPagination from "./components/CommentPagination";
+import CommentLoadMore from "./components/CommentLoadMore";
 import Navbar from "../../components/Navbar";
 import Select from "../../components/inputs/Select";
 import useCommentSocket from "./comment.socket";
@@ -18,12 +18,13 @@ export default function CommentPage() {
   ];
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { comments, totalPages, page, status } = useSelector(
+  const { comments, totalPages, status } = useSelector(
     (state) => state.comments
   );
+  const [page, setPage] = useState(1); // Track current page locally
 
   const [sort, setSort] = useState("newest");
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(5);
   const [replyTo, setReplyTo] = useState(null);
 
   useCommentSocket();
@@ -54,85 +55,57 @@ export default function CommentPage() {
     e.target.reset();
     setReplyTo(null);
   };
+  const handleLoadMore = () => {
+    if (page < totalPages) {
+      setPage((prev) => prev + 1);
+    }
+  };
 
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <>
-      {/* Navbar Mobile view */}
-      <Navbar />
+    <div className="bg-gray-50 min-h-screen">
+      <div className="container mx-auto p-5">
+        <Navbar />
+        <section className="flex flex-col md:flex-row p-4 md:p-8 gap-10 dark:bg-black">
+          <Sidebar user={user} />
+          <main className="flex-1 transition-all">
+            {/* Header section... */}
+            <h1 className="text-3xl font-bold pb-3">Comments</h1>
+            <CommentPost
+              handleComment={submitComment}
+              replyTo={replyTo}
+              setReplyTo={setReplyTo}
+            />
 
-      <section className="bg-gray-50 dark:bg-black min-h-screen flex">
-        <Sidebar user={user} />
-        {/* Main content */}
-        <main className="flex-1 p-8 md:ml-72 transition-all duration-300">
-          <div className="bg-white h-auto p-4 pb-0">
-            <div className="flex flex-col justify-between mb-4">
-              <h2
-                className="text-4xl font-semibold dark:text-white"
-                style={{ color: "#4F46E5" }}
-              >
-                Comments
-              </h2>
-              <p className="text-gray-500 py-3 ">
-                Comment list features a collection of user comments, providing
-                valuable insights, opinions, and interactions related to our
-                content.
-              </p>
-            </div>
-          </div>
+            <div className="space-y-3 bg-white mt-5 p-4 rounded-b-md border-x border-b">
+              {/* Sorting */}
+              <div className="flex justify-between items-center px-2 mb-4">
+                <Select
+                  defaultValue={sort}
+                  handleOnChange={handleSortChange}
+                  options={options}
+                />
+                <span className="text-xs text-gray-400">
+                  Showing {comments.length} comments
+                </span>
+              </div>
 
-          {/* Sorting & Limit */}
-          <div className="p-4">
-            <div className="flex flex-wrap justify-end items-center gap-2">
-              <Select
-                label="Sort by"
-                defaultValue={sort}
-                handleOnChange={handleSortChange}
-                options={options}
-              />
-              <Select
-                label="Per page"
-                defaultValue={limit}
-                handleOnChange={handleLimitChange}
-                options={[
-                  { value: 10, text: 10 },
-                  { value: 20, text: 20 },
-                  { value: 50, text: 50 },
-                  { value: 100, text: 100 },
-                ]}
+              {/* List */}
+              {comments.map((comment) => (
+                <CommentItem key={comment._id} comment={comment} user={user} />
+              ))}
+
+              {/* Load More instead of Pagination */}
+              <CommentLoadMore
+                onLoadMore={handleLoadMore}
+                isLoading={status === "loading"}
+                hasMore={page < totalPages}
               />
             </div>
-          </div>
-
-          {/* Comment Form */}
-          <CommentPost
-            handleComment={submitComment}
-            replyTo={replyTo}
-            setReplyTo={setReplyTo}
-          />
-
-          {/* Comments List*/}
-          <div className="space-y-3">
-            {comments.map((comment) => (
-              <CommentItem
-                key={comment._id}
-                comment={comment}
-                user={user}
-                onReply={handleReply}
-                compact={true}
-              />
-            ))}
-          </div>
-
-          {/* Pagination */}
-          <CommentPagination
-            pages={pages}
-            currentPage={page}
-            handlePageChange={handlePageChange}
-          />
-        </main>
-      </section>
-    </>
+          </main>
+        </section>
+      </div>
+    </div>
   );
 }

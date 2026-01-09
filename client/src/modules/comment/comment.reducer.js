@@ -37,6 +37,24 @@ const replaceCommentWithCounts = (comments, updated) => {
   return false;
 };
 
+const appendUnique = (state, payload) => {
+  const page = Number(payload.pagination.page);
+  const incoming = payload.rows;
+  if (page === 1) {
+    // First page → reset list
+    state.comments = incoming;
+  } else {
+    // Load more → append without duplicates
+    const existingIds = new Set(state.comments.map((c) => c._id));
+
+    incoming.forEach((comment) => {
+      if (!existingIds.has(comment._id)) {
+        state.comments.push(comment);
+      }
+    });
+  }
+};
+
 const replaceComment = (comments, updated) => {
   const index = comments.findIndex((c) => c._id === updated._id);
   if (index !== -1) comments[index] = updated;
@@ -73,7 +91,7 @@ const commentSlice = createSlice({
       })
       .addCase(getComments.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        state.comments = payload.rows;
+        appendUnique(state, payload);
         state.totalPages = payload.pagination.totalPages;
         state.page = payload.pagination.page;
       })

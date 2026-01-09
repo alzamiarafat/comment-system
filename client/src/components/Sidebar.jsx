@@ -11,7 +11,7 @@ export default function Sidebar({ user }) {
   };
 
   return (
-    <aside className="fixed top-8 left-8 hidden md:flex bg-white flex-col w-64 h-[calc(100vh-300px)] dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm z-20 overflow-hidden">
+    <aside className="sticky top-8 left-8 hidden md:flex bg-white flex-col w-64 h-[calc(100vh-300px)] dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm z-20 overflow-hidden">
       {/* 1. Header/Profile Section (Centered) */}
       <div className="flex flex-col items-center p-6 border-b border-gray-100 dark:border-gray-800">
         <div className="relative group mb-3">
@@ -37,7 +37,7 @@ export default function Sidebar({ user }) {
 
       {/* 2. Navigation/Action Area (Grows to fill space) */}
       <nav className="flex-1 p-4 space-y-2">
-        <button className="flex items-center justify-center w-full px-4 py-2.5 text-sm font-semibold bg-slate-200 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-xl transition-all active:scale-95">
+        <button className="flex items-center justify-center w-full px-4 py-2.5 text-sm font-semibold border border-gray-400 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-3xl transition-all active:scale-95">
           {/* <FaRegUser className="w-5 h-5 mr-2" /> */}
           View Profile
         </button>

@@ -23,7 +23,7 @@ const ReactionButton = ({
       className={`flex items-center p-2 text-sm transition-colors ${textStyles}`}
       onClick={onAction}
     >
-      <Icon className="mr-1.5 w-6 h-6" />
+      <Icon className="mr-1.5 w-4 h-4" />
       <span>{count}</span>
     </button>
   );

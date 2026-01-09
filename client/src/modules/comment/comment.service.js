@@ -1,4 +1,4 @@
-import api from "./axios.service";
+import api from "../../services/axios.service";
 
 export const getAllComments = (query) =>
   api.get("/comments", { params: query });
