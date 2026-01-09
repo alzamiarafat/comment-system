@@ -7,6 +7,7 @@ import CommentItem from "./components/CommentItem";
 import CommentPagination from "./components/CommentPagination";
 import Navbar from "../../components/Navbar";
 import Select from "../../components/inputs/Select";
+import useCommentSocket from "./comment.socket";
 
 export default function CommentPage() {
   const options = [
@@ -23,6 +24,8 @@ export default function CommentPage() {
   const [sort, setSort] = useState("newest");
   const [limit, setLimit] = useState(10);
   const [replyTo, setReplyTo] = useState(null);
+
+  useCommentSocket();
 
   useEffect(() => {
     dispatch(getComments({ page, sort, limit }));

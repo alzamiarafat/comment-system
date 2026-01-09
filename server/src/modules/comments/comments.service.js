@@ -1,6 +1,7 @@
 const response = require("../../shared/utils/response.util");
 const { HttpStatus } = require("../../shared/constant/httpCode");
 const commentRepo = require("../../repositories/comments.repository");
+const { emitEvent } = require("../../config/socket");
 
 const getAll = async (req) => {
   try {
@@ -30,6 +31,12 @@ const create = async (req) => {
       parentComment: parentComment || null,
       author: req.userId,
     });
+
+    const commentPopulate = await comment.populate(
+      "author",
+      "_id email name username"
+    );
+    emitEvent().emit("comment:new", commentPopulate);
 
     return response.successResponse(
       HttpStatus.created,

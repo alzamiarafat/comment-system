@@ -23,7 +23,22 @@ const replaceComment = (comments, updated) => {
 const commentSlice = createSlice({
   name: "comments",
   initialState,
-  reducers: {},
+  reducers: {
+    commentAddedRealtime: (state, { payload }) => {
+      const exists = state.comments.some((c) => c._id === payload._id);
+      if (!exists) {
+        state.comments.unshift(payload);
+      }
+    },
+
+    commentUpdatedRealtime: (state, { payload }) => {
+      replaceComment(state.comments, payload);
+    },
+
+    commentDeletedRealtime: (state, { payload }) => {
+      state.comments = state.comments.filter((c) => c._id !== payload._id);
+    },
+  },
   extraReducers: (builder) => {
     builder
       // ===== GET COMMENTS =====
@@ -79,5 +94,11 @@ const commentSlice = createSlice({
       });
   },
 });
+
+export const {
+  commentAddedRealtime,
+  commentUpdatedRealtime,
+  commentDeletedRealtime,
+} = commentSlice.actions;
 
 export default commentSlice.reducer;

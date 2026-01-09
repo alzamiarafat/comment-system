@@ -1,5 +1,3 @@
-const fs = require("fs");
-const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
@@ -46,11 +44,4 @@ definedRoutes.forEach((route, index) => {
 app.use(errorHandler.invalidPathHandler);
 app.use(errorHandler.errorResponserHandler);
 
-const port = process.env.PORT;
-app.listen(port, (err) => {
-  if (err) {
-    ErrorLog("Failed to start server", err, "Server");
-    process.exit(1);
-  }
-  InfoLog(`Service is running at port: ${port}`, null, "Server");
-});
+module.exports = app;
