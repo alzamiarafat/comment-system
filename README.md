@@ -3,14 +3,10 @@
 This repository contains a **full-stack web application** implementing secure authentication and real-time comment functionality.
 The system is designed using **modular architecture**, with a clear separation of concerns and scalability in mind.
 
----
-
 ## Overview
 
 The application provides a secure JWT-based authentication system combined with a real-time comment feature powered by WebSockets.  
 The backend exposes RESTful APIs and real-time events, while the frontend delivers a modern, responsive user experience using React and Redux.
-
----
 
 ## Features
 
@@ -33,8 +29,6 @@ The backend exposes RESTful APIs and real-time events, while the frontend delive
 - Lazy-loaded routes and components
 - Centralized state management with Redux
 
----
-
 ## Technology Stack
 
 ### Backend
@@ -51,11 +45,9 @@ The backend exposes RESTful APIs and real-time events, while the frontend delive
 - Axios
 - Tailwind CSS
 
----
-
 ## Installation and Setup
 
-### Clone the Repository
+##### Clone the Repository
 ```bash
 # Clone the repository from GitHub
 git clone https://github.com/alzamiarafat/comment-system
@@ -63,7 +55,7 @@ git clone https://github.com/alzamiarafat/comment-system
 # Navigate into the project directory
 cd comment-system
 ```
-## Backend
+#### Backend
 ```bash 
 cd server
 ```
@@ -84,9 +76,7 @@ npm install
 npm run dev
 ```
 
----
-
-### Frontend
+#### Frontend
 
 Create a `.env` file inside the `frontend` folder:
 ```bash
@@ -103,8 +93,6 @@ npm start
 
 - Frontend application available at: `http://localhost:3000`
 
----
-
 ### Real-Time Communication
 
 - WebSocket communication is implemented using Socket.io
@@ -112,8 +100,6 @@ npm start
 - REST APIs and WebSockets share a single HTTP server
 
 - The system is designed to support future scaling with adapters such as Redis
-
-----
 
 ### Design Principles
 
@@ -124,8 +110,6 @@ npm start
 - Scalable real-time architecture
 
 - Clean, maintainable, and testable codebase
-
----
  
 ### License
 
