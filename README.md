@@ -62,12 +62,12 @@ git clone https://github.com/alzamiarafat/comment-system
 
 # Navigate into the project directory
 cd comment-system
-
+```
 ## Backend
+```bash 
 cd server
 ```
-
-# Create a `.env` file in the backend directory:
+Create a `.env` file in the backend directory:
 
 ```bash
 PORT=5000
@@ -78,21 +78,55 @@ JWT_REFRESH_SECRET=your_jwt_refresh_secret_key
 JWT_REFRESH_EXPIRES=7d
 ```
 
-# Install backend dependencies
-`npm install`
-`npm run dev`
+Install backend dependencies
+```bash
+npm install
+npm run dev
+```
 
+---
 
-### Frontend `.env`
+### Frontend
 
 Create a `.env` file inside the `frontend` folder:
 ```bash
 REACT_APP_API_URL=http://localhost:5000
 ```
 
-# Install frontend dependencies
+Install frontend dependencies
 
-`npm install`
-`npm start`
+```bash
+npm install
+npm start
+```
+- Backend API available at: `http://localhost:5000`
 
+- Frontend application available at: `http://localhost:3000`
 
+---
+
+### Real-Time Communication
+
+- WebSocket communication is implemented using Socket.io
+
+- REST APIs and WebSockets share a single HTTP server
+
+- The system is designed to support future scaling with adapters such as Redis
+
+----
+
+### Design Principles
+
+- Clear separation of concerns
+
+- Secure authentication practices
+
+- Scalable real-time architecture
+
+- Clean, maintainable, and testable codebase
+
+---
+ 
+### License
+
+MIT License
