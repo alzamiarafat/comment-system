@@ -10,19 +10,19 @@ The backend exposes RESTful APIs and real-time events, while the frontend delive
 
 ## Features
 
-### Authentication
+#### Authentication
 - User registration, login, and logout
 - JWT-based access control
 - Protected API endpoints
 - Client-side route protection
 
-### Real-Time Comments
+#### Real-Time Comments
 - Create, update, and delete comments
 - Like and dislike reactions
 - Pagination and sorting support
 - Instant updates via Socket.io
 
-### Architecture & Performance
+#### Architecture & Performance
 - Modular backend design
 - Separation of application and server initialization
 - Single HTTP server for REST and WebSocket traffic
@@ -31,14 +31,14 @@ The backend exposes RESTful APIs and real-time events, while the frontend delive
 
 ## Technology Stack
 
-### Backend
+#### Backend
 - Node.js
 - Express.js
 - MongoDB with Mongoose
 - JSON Web Tokens (JWT)
 - Socket.io
 
-### Frontend
+#### Frontend
 - React (18+)
 - Redux
 - React Router
@@ -47,7 +47,7 @@ The backend exposes RESTful APIs and real-time events, while the frontend delive
 
 ## Installation and Setup
 
-##### Clone the Repository
+#### Clone the Repository
 ```bash
 # Clone the repository from GitHub
 git clone https://github.com/alzamiarafat/comment-system
@@ -93,24 +93,16 @@ npm start
 
 - Frontend application available at: `http://localhost:3000`
 
-### Real-Time Communication
-
+## Real-Time Communication
 - WebSocket communication is implemented using Socket.io
-
 - REST APIs and WebSockets share a single HTTP server
-
 - The system is designed to support future scaling with adapters such as Redis
 
-### Design Principles
-
+## Design Principles
 - Clear separation of concerns
-
 - Secure authentication practices
-
 - Scalable real-time architecture
-
 - Clean, maintainable, and testable codebase
  
-### License
-
+## License
 MIT License
