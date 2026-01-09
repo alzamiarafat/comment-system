@@ -1,3 +1,4 @@
+const { auth } = require("../../middlewares/auth.middleware");
 const authControllers = require("./auth.controller");
 
 module.exports = (router) => {
@@ -5,4 +6,5 @@ module.exports = (router) => {
   router.post("/auth/login", authControllers.login);
   router.post("/auth/refresh", authControllers.refresh);
   router.post("/auth/logout", authControllers.logout);
+  router.get("/auth/me", auth, authControllers.currentUser);
 };

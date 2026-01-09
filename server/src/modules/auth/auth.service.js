@@ -60,10 +60,12 @@ const login = async (req, res) => {
       sameSite: "strict",
     });
 
+    delete user._doc.password;
+    delete user._doc.__v;
     return response.successResponse(
       HttpStatus.ok,
       "User logged in successfully",
-      { accessToken, refreshToken }
+      { ...user._doc, accessToken, refreshToken }
     );
   } catch (error) {
     return response.failedResponse(
@@ -123,9 +125,18 @@ const logout = async (req, res) => {
   }
 };
 
+const loginUser = async (req) => {
+  return response.successResponse(
+    HttpStatus.ok,
+    "Login User Fetch successfully",
+    { ...req.user }
+  );
+};
+
 module.exports = {
   register,
   login,
   refresh,
   logout,
+  loginUser,
 };

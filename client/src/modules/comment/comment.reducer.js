@@ -1,49 +1,83 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, register, logout } from "./auth.action";
+import {
+  addNewComment,
+  deleteCommentById,
+  getComments,
+  reactionCommentById,
+  updateCommentById,
+} from "./comment.action";
 
 const initialState = {
-  isAuth: false,
-  role: null,
-  loading: false,
+  comments: [],
+  totalPages: 1,
+  page: 1,
+  status: "idle",
   error: null,
 };
 
-const authSlice = createSlice({
-  name: "auth",
+const replaceComment = (comments, updated) => {
+  const index = comments.findIndex((c) => c._id === updated._id);
+  if (index !== -1) comments[index] = updated;
+};
+
+const commentSlice = createSlice({
+  name: "comments",
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
-    const setPending = (state) => {
-      state.loading = true;
-      state.error = null;
-    };
-
-    const setRejected = (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    };
-
     builder
-      // Login
-      .addCase(login.pending, setPending)
-      .addCase(login.fulfilled, (state, action) => {
-        state.loading = false;
-        state.isAuth = true;
-        state.user = action.payload;
+      // ===== GET COMMENTS =====
+      .addCase(getComments.pending, (state) => {
+        state.status = "loading";
       })
-      .addCase(login.rejected, setRejected)
-
-      // Register
-      .addCase(register.pending, setPending)
-      .addCase(register.fulfilled, (state) => {
-        state.loading = false;
+      .addCase(getComments.fulfilled, (state, { payload }) => {
+        state.status = "succeeded";
+        state.comments = payload.rows;
+        state.totalPages = payload.pagination.totalPages;
+        state.page = payload.pagination.page;
       })
-      .addCase(register.rejected, setRejected)
+      .addCase(getComments.rejected, (state, { payload }) => {
+        state.status = "failed";
+        state.error = payload;
+      })
 
-      // Logout
-      .addCase(logout.fulfilled, (state) => {
-        state.isAuth = false;
+      // ===== ADD COMMENT =====
+      .addCase(addNewComment.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.comments.unshift(action.payload); // ✔ array
+      })
+
+      // ===== REACTION / UPDATE =====
+      .addCase(reactionCommentById.fulfilled, (state, { payload }) => {
+        replaceComment(state.comments, payload);
+      })
+      .addCase(updateCommentById.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateCommentById.fulfilled, (state, { payload }) => {
+        state.status = "succeeded";
+        replaceComment(state.comments, payload);
+      })
+      .addCase(updateCommentById.rejected, (state, { payload }) => {
+        state.status = "failed";
+        state.error = payload;
+      })
+
+      // ===== DELETE =====
+      .addCase(deleteCommentById.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deleteCommentById.fulfilled, (state, { payload }) => {
+        state.status = "succeeded";
+        state.comments = state.comments.filter(
+          (comment) => comment._id !== payload._id
+        );
+      })
+      .addCase(deleteCommentById.rejected, (state, { payload }) => {
+        state.status = "failed";
+        state.error = payload;
       });
   },
 });
 
-export default authSlice.reducer;
+export default commentSlice.reducer;

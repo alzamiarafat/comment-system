@@ -4,20 +4,6 @@ const commentRepo = require("../../repositories/comments.repository");
 
 const getAll = async (req) => {
   try {
-    // const sortMap = {
-    //   newest: { createdAt: -1 },
-    //   mostLiked: { "likes.length": -1 },
-    //   mostDisliked: { "dislikes.length": -1 },
-    // };
-
-    // const comments = await Comment.find({ parentComment: null })
-    //   .populate("author", "username")
-    //   .sort(sortMap[sort])
-    //   .skip((page - 1) * limit)
-    //   .limit(Number(limit));
-
-    // res.json(comments);
-
     const comments = await commentRepo.findWithPaginated(req.query);
     return response.successResponse(
       HttpStatus.ok,
@@ -131,7 +117,7 @@ const destroy = async (req) => {
     return response.successResponse(
       HttpStatus.ok,
       "Comment deleted successfully",
-      {}
+      comment
     );
   } catch (error) {
     return response.failedResponse(

@@ -1,33 +1,68 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../../services/axios.service";
-import { signIn } from "../../services/auth.service";
+import {
+  getAllComments,
+  createComment,
+  reactionComment,
+  updateComment,
+  deleteComment,
+} from "../../services/comment.service";
 
-export const login = createAsyncThunk(
-  "auth/login",
-  async (payload, { rejectWithValue }) => {
+export const getComments = createAsyncThunk(
+  "comments/getComments",
+  async (query, { rejectWithValue }) => {
     try {
-      const results = await signIn(payload);
-      const data = results?.data?.data;
-      localStorage.setItem("accessToken", data.accessToken);
-      return data;
+      const res = await getAllComments(query);
+      return res.data.data;
     } catch (err) {
-      return rejectWithValue(err.response.data.message);
+      return rejectWithValue(err.response.data);
     }
   }
 );
 
-export const register = createAsyncThunk(
-  "auth/register",
+export const addNewComment = createAsyncThunk(
+  "comments/addNewComment",
   async (payload, { rejectWithValue }) => {
     try {
-      await api.post("/auth/register", payload);
+      const res = await createComment(payload);
+      return res.data;
     } catch (err) {
-      return rejectWithValue(err.response.data.error);
+      return rejectWithValue(err.response.data);
     }
   }
 );
 
-export const logout = createAsyncThunk("auth/logout", async () => {
-  await api.post("/auth/logout");
-  localStorage.removeItem("accessToken");
-});
+export const reactionCommentById = createAsyncThunk(
+  "comments/reactionComment",
+  async ({ id, type }, { rejectWithValue }) => {
+    try {
+      const res = await reactionComment(id, { type });
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const updateCommentById = createAsyncThunk(
+  "comments/updateComment",
+  async ({ id, content }, { rejectWithValue }) => {
+    try {
+      const res = await updateComment(id, { content });
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const deleteCommentById = createAsyncThunk(
+  "comments/deleteComment",
+  async (id, { rejectWithValue }) => {
+    try {
+      const res = await deleteComment(id);
+      return res.data.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);

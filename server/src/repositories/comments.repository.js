@@ -35,9 +35,32 @@ exports.findWithPaginated = async (query) => {
   const pipeline = [
     { $match: matchStage },
     {
+      $lookup: {
+        from: "users",
+        localField: "author",
+        foreignField: "_id",
+        as: "author",
+      },
+    },
+    {
+      $unwind: {
+        path: "$author",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
       $addFields: {
         likesCount: { $size: { $ifNull: ["$likes", []] } },
         dislikesCount: { $size: { $ifNull: ["$dislikes", []] } },
+      },
+    },
+    {
+      $project: {
+        "author.password": 0,
+        "author.refreshToken": 0,
+        "author.updatedAt": 0,
+        "author.deleted": 0,
+        "author.__v": 0,
       },
     },
   ];
