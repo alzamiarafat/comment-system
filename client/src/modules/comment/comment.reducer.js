@@ -15,6 +15,28 @@ const initialState = {
   error: null,
 };
 
+const replaceCommentWithCounts = (comments, updated) => {
+  for (let i = 0; i < comments.length; i++) {
+    const c = comments[i];
+
+    if (c._id === updated._id) {
+      comments[i] = {
+        ...c,
+        ...updated,
+        likesCount: updated.likes?.length ?? 0,
+        dislikesCount: updated.dislikes?.length ?? 0,
+      };
+      return true;
+    }
+
+    if (c.replies?.length) {
+      const found = replaceCommentWithCounts(c.replies, updated);
+      if (found) return true;
+    }
+  }
+  return false;
+};
+
 const replaceComment = (comments, updated) => {
   const index = comments.findIndex((c) => c._id === updated._id);
   if (index !== -1) comments[index] = updated;
@@ -33,6 +55,10 @@ const commentSlice = createSlice({
 
     commentUpdatedRealtime: (state, { payload }) => {
       replaceComment(state.comments, payload);
+    },
+
+    commentReactionRealtime: (state, { payload }) => {
+      replaceCommentWithCounts(state.comments, payload);
     },
 
     commentDeletedRealtime: (state, { payload }) => {
@@ -57,21 +83,23 @@ const commentSlice = createSlice({
       })
 
       // ===== ADD COMMENT =====
-      .addCase(addNewComment.fulfilled, (state, action) => {
+      .addCase(addNewComment.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(addNewComment.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        state.comments.unshift(action.payload); // ✔ array
       })
 
       // ===== REACTION / UPDATE =====
       .addCase(reactionCommentById.fulfilled, (state, { payload }) => {
-        replaceComment(state.comments, payload);
+        replaceCommentWithCounts(state.comments, payload.data);
       })
-      .addCase(updateCommentById.pending, (state) => {
-        state.status = "loading";
-      })
+      // .addCase(updateCommentById.pending, (state) => {
+      //   state.status = "loading";
+      // })
       .addCase(updateCommentById.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
-        replaceComment(state.comments, payload);
+        replaceComment(state.comments, payload.data);
       })
       .addCase(updateCommentById.rejected, (state, { payload }) => {
         state.status = "failed";
@@ -98,6 +126,7 @@ const commentSlice = createSlice({
 export const {
   commentAddedRealtime,
   commentUpdatedRealtime,
+  commentReactionRealtime,
   commentDeletedRealtime,
 } = commentSlice.actions;
 

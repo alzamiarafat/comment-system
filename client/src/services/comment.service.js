@@ -12,6 +12,5 @@ export const reactionComment = (id, payload) =>
   api.post(`/comments/${id}/reactions`, payload);
 
 export const deleteComment = (id) => {
-  console.log("🚀 ~ deleteComment ~ id:", id);
   return api.delete(`/comments/${id}`);
 };

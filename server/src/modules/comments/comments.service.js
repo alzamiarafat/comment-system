@@ -99,6 +99,9 @@ const toggleReaction = async (req) => {
       comment[type].push(req.userId);
     }
     const updatedComment = await commentRepo.update(id, comment);
+
+    emitEvent().emit("comment:reaction", updatedComment);
+
     return response.successResponse(
       HttpStatus.ok,
       "Reaction toggled successfully",

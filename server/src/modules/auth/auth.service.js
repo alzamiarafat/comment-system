@@ -9,7 +9,7 @@ const { comparePassword } = require("../../shared/utils/hash.util");
 
 const register = async (req) => {
   try {
-    const { username, email, password } = req.body;
+    const { name, username, email, password } = req.body;
     if (!username || !email || !password) {
       throw new Error("Required fields are missing.");
     }
@@ -17,9 +17,10 @@ const register = async (req) => {
     const userExists = await userRepo.findByOne({ email });
     if (userExists) throw new Error("User already exists");
 
-    const user = await userRepo.create({ username, email, password });
+    const user = await userRepo.create({ name, username, email, password });
     const responseData = {
       _id: user._id,
+      name: user.name,
       username: user.username,
       email: user.email,
     };

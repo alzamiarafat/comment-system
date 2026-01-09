@@ -8,6 +8,7 @@ import CommentPagination from "./components/CommentPagination";
 import Navbar from "../../components/Navbar";
 import Select from "../../components/inputs/Select";
 import useCommentSocket from "./comment.socket";
+import CommentPost from "./components/CommentPost";
 
 export default function CommentPage() {
   const options = [
@@ -31,7 +32,7 @@ export default function CommentPage() {
     dispatch(getComments({ page, sort, limit }));
   }, [dispatch, page, sort, limit]);
 
-  if (status === "loading") return <PageLoader />;
+  // if (status === "loading") return <PageLoader />;
   if (!comments?.length)
     return (
       <p className="text-center py-10 text-gray-500 dark:text-gray-400">
@@ -65,16 +66,24 @@ export default function CommentPage() {
         <Sidebar user={user} />
         {/* Main content */}
         <main className="flex-1 p-8 md:ml-72 transition-all duration-300">
-          <div className="bg-white h-20 p-4">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-4xl font-semibold text-gray-900 dark:text-white">
+          <div className="bg-white h-auto p-4 pb-0">
+            <div className="flex flex-col justify-between mb-4">
+              <h2
+                className="text-4xl font-semibold dark:text-white"
+                style={{ color: "#4F46E5" }}
+              >
                 Comments
               </h2>
+              <p className="text-gray-500 py-3 ">
+                Comment list features a collection of user comments, providing
+                valuable insights, opinions, and interactions related to our
+                content.
+              </p>
             </div>
           </div>
 
+          {/* Sorting & Limit */}
           <div className="p-4">
-            {/* Sorting & Limit */}
             <div className="flex flex-wrap justify-end items-center gap-2">
               <Select
                 label="Sort by"
@@ -97,35 +106,13 @@ export default function CommentPage() {
           </div>
 
           {/* Comment Form */}
-          <form onSubmit={submitComment} className="mb-6 space-y-2">
-            {replyTo && (
-              <div className="flex justify-between items-center px-3 py-1 bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 rounded-md">
-                Replying to #{replyTo}
-                <button
-                  type="button"
-                  onClick={() => setReplyTo(null)}
-                  className="text-red-500 hover:underline text-xs"
-                >
-                  Cancel
-                </button>
-              </div>
-            )}
-            <textarea
-              name="content"
-              rows="5"
-              placeholder="Write a comment..."
-              required
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 dark:bg-gray-800 dark:text-white text-sm"
-            />
-            <button
-              type="submit"
-              className="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition"
-            >
-              {replyTo ? "Reply" : "Post Comment"}
-            </button>
-          </form>
+          <CommentPost
+            handleComment={submitComment}
+            replyTo={replyTo}
+            setReplyTo={setReplyTo}
+          />
 
-          {/* Comments */}
+          {/* Comments List*/}
           <div className="space-y-3">
             {comments.map((comment) => (
               <CommentItem

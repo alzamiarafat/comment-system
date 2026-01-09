@@ -72,6 +72,6 @@ exports.findWithPaginated = async (query) => {
 };
 
 exports.update = async (id, data) =>
-  await Comment.findByIdAndUpdate(id, data, { new: true });
+  await Comment.findByIdAndUpdate(id, data, { new: true }).populate("author");
 
 exports.remove = async (id) => await Comment.findByIdAndDelete(id);

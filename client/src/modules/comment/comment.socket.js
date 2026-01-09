@@ -5,6 +5,7 @@ import {
   commentAddedRealtime,
   commentUpdatedRealtime,
   commentDeletedRealtime,
+  commentReactionRealtime,
 } from "./comment.reducer";
 
 export default function useCommentSocket() {
@@ -17,6 +18,10 @@ export default function useCommentSocket() {
 
     socket.on("comment:update", (comment) => {
       dispatch(commentUpdatedRealtime(comment));
+    });
+
+    socket.on("comment:reaction", (comment) => {
+      dispatch(commentReactionRealtime(comment));
     });
 
     socket.on("comment:delete", (comment) => {

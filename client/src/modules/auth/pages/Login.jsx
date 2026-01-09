@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { login } from "../auth.action";
+import ErrorCard from "../../../components/common/ErrorCard";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -76,17 +77,7 @@ export default function Login() {
                   required={true}
                 />
               </div>
-              {error && (
-                <div className="flex items-center justify-between bg-red-100 p-2 rounded">
-                  <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <div className="text-sm font-light text-red-500">
-                        <p>{error}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+              {error && <ErrorCard error={error} />}
 
               <div className="flex items-center justify-between">
                 <div className="flex items-start">
